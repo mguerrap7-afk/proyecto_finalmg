@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Services;
+
+use App\Repositories\UserRepository;
+
+class AuthService
+{
+    protected UserRepository $users;
+
+    public function __construct()
+    {
+        $this->users = new UserRepository();
+    }
+    public function register(string $name, string $email, string $password)
+    {
+        $token = bin2hex(random_bytes(32));
+
+        $id = $this->users->create([
+
+        'name'                  => $name,
+        'email'                 => $email,
+        'password'              => password_hash($password, PASSWORD_DEFAULT),
+        'active'                => 0,
+        'is_admin'              => 0,
+        'activation_token'      => hash('sha256', $token),
+        'activation_expires'    => date('Y-m-d H:i:s', time() + 86400),
+
+        ]);
+
+        if (! $id) {
+            return false;
+        }
+        return $token;
+    }
+
+    public function activate(string $token): bool
+    {
+        $user = $this->users->findByActivationToken(hash('sha256', $token));
+
+        if (! $user || strtoime($user['activation_expires']) < time()) 
+        {
+            return false;
+        }
+return $this->users->update((int) $user['id'], [
+    'active'                => 1,
+    'activation_token'      => null,
+    'activation_expires'    => null,
+]);
+    }
+
+    public function errors(): array
+    {
+        return $this->users->errors();
+    }
+}
