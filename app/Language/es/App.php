@@ -22,5 +22,6 @@ return [
 'signupSuccess'         => 'Cuenta creada. Revisa tu correo para activarla.',
 'activationOk'          => 'Cuenta activada. Ya puedes iniciar sesión.',
 'activationFail'        => 'El enlace de activación no es válido o ya expiró.',
+'noPermission'          => 'No tienes permiso para acceder a esa página.',
 
 ];

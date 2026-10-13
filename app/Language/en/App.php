@@ -21,4 +21,5 @@ return [
 'signupSuccess'     => 'Account created. Check your email to activate it.',
 'activationOk'      => 'Account activated. You can now log in.',
 'activationFail'    => 'The activation link is invalid or has expired.',
+'noPermission'      => 'You do not have permission to access that page.',
 ];

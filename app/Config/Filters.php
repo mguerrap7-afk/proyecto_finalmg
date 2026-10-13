@@ -25,6 +25,9 @@ class Filters extends BaseFilters
      * or [filter_name => [classname1, classname2, ...]]
      */
     public array $aliases = [
+    'auth'     => \App\Filters\AuthFilter::class,
+'admin'    => \App\Filters\AdminFilter::class,
+'remember' => \App\Filters\RememberFilter::class,
 	'locale'	=> \App\Filters\LocaleFilter::class,
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
@@ -35,6 +38,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+
     ];
 
     /**
@@ -74,6 +78,8 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
 	     'locale',
+         'locale',
+'remember',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',

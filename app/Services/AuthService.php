@@ -48,7 +48,41 @@ return $this->users->update((int) $user['id'], [
     'activation_expires'    => null,
 ]);
     }
+    
+    public function rememberToken(int $userId): string
+    {
+        $token = bin2hex(random_bytes(32));
+        $this->users->update($userId, ['remember_token' => hash('sha256', $token)]);
 
+        return $userId . ':' . $token;
+    }
+
+    
+    public function userFromRemember(string $cookie): ?array
+    {
+        $parts = explode(':', $cookie, 2);
+        if (count($parts) !== 2) {
+            return null;
+        }
+
+        $user = $this->users->findById((int) $parts[0]);
+        if (! $user || (int) $user['active'] !== 1 || empty($user['remember_token'])) {
+            return null;
+        }
+
+        if (! hash_equals($user['remember_token'], hash('sha256', $parts[1]))) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    public function forgetRemember(int $userId): void
+    {
+        $this->users->update($userId, ['remember_token' => null]);
+    }
+
+    
     public function errors(): array
     {
         return $this->users->errors();

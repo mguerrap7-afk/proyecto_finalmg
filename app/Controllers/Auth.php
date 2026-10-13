@@ -57,4 +57,65 @@ class Auth extends BaseController
 
         return redirect()->to('/')->with('error', lang('App.activationFail'));
     }
+        public function login()
+    {
+        if (session()->get('user_id')) {
+            return redirect()->to('/');
+        }
+        return view('auth/login');
+    }
+
+    public function attemptLogin()
+    {
+        $rules = [
+            'email'    => 'required|valid_email',
+            'password' => 'required',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $result = $this->auth->login(
+            $this->request->getPost('email'),
+            $this->request->getPost('password')
+        );
+
+        if ($result === 'invalid') {
+            return redirect()->back()->withInput()->with('error', lang('App.invalidLogin'));
+        }
+        if ($result === 'inactive') {
+            return redirect()->back()->withInput()->with('error', lang('App.inactiveAccount'));
+        }
+
+        session()->regenerate();
+        session()->set([
+            'user_id'   => (int) $result['id'],
+            'user_name' => $result['name'],
+            'is_admin'  => (int) $result['is_admin'],
+        ]);
+
+        $response = redirect()->to('/')->with('success', lang('App.loginSuccess'));
+
+        if ($this->request->getPost('remember')) {
+            $value = $this->auth->rememberToken((int) $result['id']);
+            $response->setCookie('remember_me', $value, 60 * 60 * 24 * 30);
+        }
+
+        return $response;
+    }
+
+    public function logout()
+    {
+        $id = (int) session()->get('user_id');
+        if ($id) {
+            $this->auth->forgetRemember($id);
+        }
+
+        session()->remove(['user_id', 'user_name', 'is_admin']);
+
+        return redirect()->to('/')
+            ->with('success', lang('App.logoutSuccess'))
+            ->deleteCookie('remember_me');
+    }
 }
