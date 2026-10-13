@@ -22,7 +22,7 @@ protected $allowedFields = [
 
 protected $validationRules = [
 'name' => 'required|min_length[3]|max_length[100]',
-'email' => 'required|valid_email|max_length[150]|is_unique[users.email,id,{id}',
+'email' => 'required|valid_email|max_length[150]|is_unique[users.email,id,{id}]',
 ];
 
 protected $skipValidation = false;

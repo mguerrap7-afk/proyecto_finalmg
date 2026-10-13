@@ -38,7 +38,7 @@ class AuthService
     {
         $user = $this->users->findByActivationToken(hash('sha256', $token));
 
-        if (! $user || strtoime($user['activation_expires']) < time()) 
+        if (! $user || strtotime($user['activation_expires']) < time()) 
         {
             return false;
         }

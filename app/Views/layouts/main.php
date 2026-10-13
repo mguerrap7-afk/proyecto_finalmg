@@ -14,7 +14,7 @@
             <a class="nav-link" href="<?= site_url('lang/es') ?>">Español</a>
 </div>
 <div class="navbar-nav">
-    <a class="nav-link" href="#"><?= lang('App.signup') ?></a>
+    <a class="nav-link" href="<?= site_url('signup') ?>"><?= lang('App.signup') ?></a>
     <a class="nav-link" href="#"><?= lang('App.login') ?></a>
 </div>
 </nav>
@@ -23,6 +23,18 @@
     <?php if (session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
     <?php endif; ?>
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+        <?php endif; ?>
+        <?php if (session()->getFlashdata('errors')): ?>
+            <div class="alert alert-danger">
+            <ul class="mb-0">
+                <?php foreach ((array) session()->getFlashdata('errors') as $e): ?>
+                    <li><?= esc($e) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
     <?= $this->renderSection('content') ?>
 </div>
 </body>
