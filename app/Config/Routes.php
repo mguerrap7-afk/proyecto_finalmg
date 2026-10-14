@@ -11,4 +11,13 @@ $routes->get('activate/(:segment)', 'Auth::activate/$1');
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::attemptLogin');
 $routes->post('logout', 'Auth::logout');
+$routes->group('tasks', ['filter' => 'auth'], static function ($routes) {
+$routes->get('/', 'Tasks::index');
+$routes->get('new', 'Tasks::new');
+$routes->post('create', 'Tasks::create');
+$routes->get('(:num)', 'Tasks::show/$1');
+$routes->get('(:num)/edit', 'Tasks::edit/$1');
+$routes->post('(:num)/update', 'Tasks::update/$1');
+$routes->post('(:num)/delete', 'Tasks::delete/$1');
+});
 
