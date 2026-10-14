@@ -22,4 +22,9 @@ return [
 'activationOk'      => 'Account activated. You can now log in.',
 'activationFail'    => 'The activation link is invalid or has expired.',
 'noPermission'      => 'You do not have permission to access that page.',
+'rememberMe'        => 'Remember me',
+'forgotPassword'    => 'Forgot password?',
+'invalidLogin'      => 'Incorrect email or password.',
+'inactiveAccount'   => 'Your account is not activated yet. Check your email.',
+'noPermission'      => 'You do not have permission to acces that page.',
 ];

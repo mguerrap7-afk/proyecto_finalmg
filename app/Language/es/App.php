@@ -23,5 +23,10 @@ return [
 'activationOk'          => 'Cuenta activada. Ya puedes iniciar sesión.',
 'activationFail'        => 'El enlace de activación no es válido o ya expiró.',
 'noPermission'          => 'No tienes permiso para acceder a esa página.',
+'rememberMe'            => 'Recordarme',
+'forgotPassword'        => '¿Olvidaste tu contraseña?',
+'invalidLogin'          => 'Correo o contraseña incorrectos.',
+'inactiveAccount'       => 'Tu cuenta aún no está activada. Revisa tu correo.',
+'noPermission'          => 'No tienes permiso para acceder a esa pagina.',
 
 ];

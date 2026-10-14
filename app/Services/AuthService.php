@@ -48,6 +48,19 @@ return $this->users->update((int) $user['id'], [
     'activation_expires'    => null,
 ]);
     }
+public function login(string $email, string $password)
+{
+    $user = $this->users->findByEmail($email);
+
+    if (! $user || ! password_verify($password, $user['password'])) {
+        return 'invalid';
+    }
+    if ((int) $user['active'] !== 1) {
+        return 'inactive';
+    }
+    return $user;
+}
+    
     
     public function rememberToken(int $userId): string
     {
