@@ -20,4 +20,17 @@ $routes->get('(:num)/edit', 'Tasks::edit/$1');
 $routes->post('(:num)/update', 'Tasks::update/$1');
 $routes->post('(:num)/delete', 'Tasks::delete/$1');
 });
+$routes->group('profile', ['filter' => 'auth'], static function ($routes) {
+$routes->get('/', 'Profile::index');
+$routes->get('confirm', 'Profile::confirm');
+$routes->post('confirm', 'Profile::checkConfirm');
+$routes->get('edit', 'Profile::edit');
+$routes->post('update', 'Profile::update');
+$routes->get('password', 'Profile::password');
+$routes->post('password', 'Profile::updatePassword');
+$routes->get('image', 'Profile::image');
+$routes->post('image', 'Profile::saveImage');
+$routes->get('image/delete', 'Profile::deleteImageConfirm');
+$routes->post('image/delete', 'Profile::deleteImage');
+});
 
