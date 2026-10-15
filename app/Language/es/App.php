@@ -65,6 +65,19 @@ return [
 'areYouSure'            => '¿Estás seguro?',
 'imageSaved'            => 'Imagen actualizada.',
 'imageDeleted'          => 'Imagen eliminada.',
+'newUser'               => 'Nuevo usuario',
+'editUser'              => 'Editar usuario',
+'user'                  => 'Usuario',
+'active'                => 'Activo',
+'administrator'         => 'Administrador',
+'yes'                   => 'Sí',
+'no'                    => 'No',
+'userCreated'           => 'Usuario creado.',
+'userUpdated'           => 'Usuario actualizado.',
+'userDeleted'           => 'Usuario eliminado.',
+'userNotFound'          => 'El usuario no existe.',
+'cannotDeleteSelf'      => 'No puedes eliminar tu propio usuario.',
+'lastAdmin'             => 'Debe quedar al menos un administrador activo.',
 
 
 ];

@@ -33,4 +33,13 @@ $routes->post('image', 'Profile::saveImage');
 $routes->get('image/delete', 'Profile::deleteImageConfirm');
 $routes->post('image/delete', 'Profile::deleteImage');
 });
+$routes->group('users', ['filter' => 'admin'], static function ($routes) {
+$routes->get('/', 'Users::index');
+$routes->get('new', 'Users::new');
+$routes->post('create', 'Users::create');
+$routes->get('(:num)', 'Users::show/$1');
+$routes->get('(:num)/edit', 'Users::edit/$1');
+$routes->post('(:num)/update', 'Users::update/$1');
+$routes->post('(:num)/delete', 'Users::delete/$1');
+});
 

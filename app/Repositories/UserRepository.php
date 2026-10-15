@@ -33,6 +33,25 @@ class UserRepository
     {
         return $this->model->update($id, $data);
     }
+    public function paginate(int $perPage = 5): array
+    {
+        return $this->model->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->paginate($perPage);
+    }
+
+    public function pager()
+    {
+        return $this->model->pager;
+    }
+
+    public function delete(int $id): bool
+    {
+        return (bool) $this->model->delete($id);
+    }
+
+    public function countAdmins(): int
+    {
+        return $this->model->where('is_admin', 1)->where('active', 1)->countAllResults();
+    }
     public function errors(): array
     {
         return $this->model->errors();
