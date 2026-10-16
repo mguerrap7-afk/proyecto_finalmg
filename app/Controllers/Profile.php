@@ -20,13 +20,13 @@ class Profile extends BaseController
 
     public function index()
     {
-        return view('profile/index', ['user' => $this->profile->get($this->uid())]);
+        return blade('profile.index', ['user' => $this->profile->get($this->uid())]);
     }
 
 
     public function confirm()
     {
-        return view('profile/confirm');
+        return blade('profile.confirm');
     }
 
     public function checkConfirm()
@@ -48,7 +48,7 @@ class Profile extends BaseController
             return redirect()->to('profile/confirm');
         }
 
-        return view('profile/edit', ['user' => $this->profile->get($this->uid())]);
+        return blade('profile.edit', ['user' => $this->profile->get($this->uid())]);
     }
 
     public function update()
@@ -82,7 +82,7 @@ class Profile extends BaseController
 
     public function password()
     {
-        return view('profile/password');
+        return blade('profile.password');
     }
 
     public function updatePassword()
@@ -109,7 +109,7 @@ class Profile extends BaseController
 
     public function image()
     {
-        return view('profile/image');
+        return blade('profile.image');
     }
 
     public function saveImage()
@@ -133,7 +133,7 @@ class Profile extends BaseController
 
     public function deleteImageConfirm()
     {
-        return view('profile/delete_image');
+        return blade('profile.delete_image');
     }
 
     public function deleteImage()
