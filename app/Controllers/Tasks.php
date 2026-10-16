@@ -22,7 +22,7 @@ class Tasks extends BaseController
     {
         $search = trim((string) $this->request->getGet('q'));
 
-        return view('tasks/index', [
+        return blade('tasks.index', [
             'tasks'  => $this->tasks->list($this->uid(), $search),
             'pager'  => $this->tasks->pager(),
             'search' => $search,
@@ -31,7 +31,7 @@ class Tasks extends BaseController
 
     public function new()
     {
-        return view('tasks/form', ['task' => null]);
+        return blade('tasks.form', ['task' => null]);
     }
 
     public function create()
@@ -58,7 +58,7 @@ class Tasks extends BaseController
             return redirect()->to('tasks')->with('error', lang('App.taskNotFound'));
         }
 
-        return view('tasks/show', ['task' => $task]);
+        return blade('tasks.show', ['task' => $task]);
     }
 
     public function edit(int $id)
@@ -68,7 +68,7 @@ class Tasks extends BaseController
             return redirect()->to('tasks')->with('error', lang('App.taskNotFound'));
         }
 
-        return view('tasks/form', ['task' => $task]);
+        return blade('tasks.form', ['task' => $task]);
     }
 
     public function update(int $id)
