@@ -1,69 +1,186 @@
-# CodeIgniter 4 Application Starter
+# Sistema organizador de tareas escolares
 
-## What is CodeIgniter?
+**Autor:** Marcos Guerra
+**Curso:** Algoritmos
+**Universidad:** Universidad Mariano Gálvez de Guatemala, Facultad de Ingeniería en Sistemas de Información y Ciencias de la computación
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Aplicación web para organizar tareas escolares. Incluye registro con activación por correo, inicio de sesión, recuperación de contraseña, perfil con imagen, gestión de usuarios (administrador) y un CRUD de tareas, con interfaz en inglés y español.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Tecnologías
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+| Componente | Tecnología |
+|---|---|
+| Framework | CodeIgniter 4 (PHP) |
+| Motor de plantillas | Blade (`illuminate/view`) |
+| Base de datos | MariaDB, administrada con phpMyAdmin |
+| Estilos | Bootstrap 5 (CDN) |
+| Correo | SMTP (Brevo) |
+| Sistema operativo | Ubuntu en VirtualBox |
+| Control de versiones | Git y GitHub |
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## Arquitectura
 
-## Installation & updates
+Arquitectura monolítica cliente/servidor de 3 capas y 1 nivel.
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+```
+Navegador -> Controlador -> Servicio -> Repositorio -> Modelo -> MariaDB
+                 |
+                 +-> Vista (Blade) -> Navegador
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+| Capa | Responsabilidad | Carpeta |
+|---|---|---|
+| Presentación | Vistas Blade (HTML y CSS) | `app/Views` |
+| Lógica de negocio | Controladores y servicios | `app/Controllers`, `app/Services` |
+| Enlace de datos | Repositorios y modelos | `app/Repositories`, `app/Models` |
 
-## Setup
+Otras carpetas: `app/Filters` (autenticación, administrador, idioma, Remember me), `app/Language` (inglés y español), `app/Database/Migrations` (estructura de la base de datos).
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Funcionalidades
 
-## Important Change with index.php
+- **Bienvenida** con selector English/Español que conserva la página actual.
+- **Registro** con correo de activación (el enlace vence en 24 horas).
+- **Inicio de sesión** con Remember me y mensajes de inicio y cierre de sesión.
+- **Recuperación de contraseña** por correo (el enlace vence en 1 hora).
+- **Perfil:** editar datos (pide la contraseña), cambiar contraseña, subir y eliminar imagen con avatar por defecto.
+- **Usuarios (solo administradores):** listado paginado (Newer/Older), crear, ver, editar y eliminar.
+- **Tareas:** crear, ver, editar, eliminar, búsqueda y paginación. Cada usuario ve solo las suyas.
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+## Seguridad e integridad de datos
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+- Contraseñas con `password_hash`; los tokens se guardan como hash SHA-256.
+- Salida escapada en las vistas (`{{ }}` de Blade) contra XSS.
+- Filtros `auth` y `admin` protegen las rutas, no solo el menú.
+- Correo único y llave foránea `tasks.user_id` con `CASCADE`.
+- No se puede eliminar el propio usuario ni dejar el sistema sin administradores activos.
+- El archivo `.env` no se sube al repositorio.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+## Requisitos
 
-## Repository Management
+- Ubuntu o Lubuntu 22.04 o superior (probado en Ubuntu 24.04 sobre VirtualBox)
+- PHP 8.1 o superior con las extensiones `intl`, `mbstring`, `xml`, `curl`, `mysql`, `gd` y `zip`
+- MariaDB o MySQL
+- Composer
+- Git
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## Instalación
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+### 1. Paquetes del sistema
 
-## Server Requirements
+```bash
+sudo apt update
+sudo apt install -y git unzip curl composer mariadb-server apache2 phpmyadmin \
+  php php-cli php-intl php-mbstring php-xml php-curl php-mysql php-gd php-zip
+```
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+### 2. Clonar el proyecto
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+```bash
+git clone https://github.com/mguerrap7-afk/proyecto_finalmg.git
+cd proyecto_finalmg
+composer install
+```
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+### 3. Crear la base de datos
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+```bash
+sudo mariadb
+```
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+```sql
+CREATE DATABASE proyecto_final CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'taskappd'@'localhost' IDENTIFIED BY 'TU_CLAVE';
+GRANT ALL PRIVILEGES ON proyecto_final.* TO 'taskappd'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+### 4. Configurar el entorno
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Reemplaza los valores `CAMBIAR` por los tuyos:
+
+| Variable | Qué poner |
+|---|---|
+| `database.default.username` | `taskappd` |
+| `database.default.password` | la clave del paso anterior |
+| `email.fromEmail` | remitente verificado en tu proveedor SMTP |
+| `email.SMTPUser` y `email.SMTPPass` | credenciales SMTP (por ejemplo Brevo) |
+
+Los valores con espacios van entre comillas, por ejemplo `email.fromName = "Tareas escolares"`.
+
+### 5. Crear las tablas
+
+```bash
+php spark migrate
+```
+
+### 6. Carpeta de imágenes
+
+```bash
+mkdir -p public/uploads/profiles
+```
+
+### 7. Ejecutar
+
+```bash
+php spark serve
+```
+
+Abre `http://localhost:8080`.
+
+## Primer administrador
+
+1. Regístrate en `/signup` y activa la cuenta con el enlace del correo. Si el envío falla, el enlace queda en `writable/logs/`:
+```bash
+   grep "Activation link" writable/logs/*.log | tail -1
+```
+2. En phpMyAdmin (`http://localhost/phpmyadmin`), tabla `users`, cambia `is_admin` a `1` en tu fila.
+3. Cierra sesión y vuelve a entrar. Aparecerá **Usuarios** en la barra.
+
+## Estructura del proyecto
+
+```
+app/
+- Controllers/    Auth, Home, Language, Profile, Tasks, Users
+- Services/       AuthService, ProfileService, TaskService, UserService, MailService
+- Repositories/   UserRepository, TaskRepository
+- Models/         UserModel, TaskModel
+- Filters/        AuthFilter, AdminFilter, RememberFilter, LocaleFilter
+- Helpers/        blade_helper.php
+- Language/       en/, es/
+- Database/       Migrations/
+- Views/          layouts/, auth/, tasks/, profile/, users/ (archivos .blade.php)
+```
+
+## Diagrama de clases
+
+Resumen de la relación entre capas:
+
+```mermaid
+classDiagram
+    direction LR
+    Auth --> AuthService
+    Auth --> MailService
+    Tasks --> TaskService
+    Profile --> ProfileService
+    Users --> UserService
+    AuthService --> UserRepository
+    ProfileService --> UserRepository
+    UserService --> UserRepository
+    TaskService --> TaskRepository
+    UserRepository --> UserModel
+    TaskRepository --> TaskModel
+    UserModel "1" --> "0..*" TaskModel : tiene
+```
+
+
+- Máquina virtual con Ubuntu en VirtualBox
+- Pantalla de bienvenida (inglés y español)
+- Registro, correo de activación e inicio de sesión
+- Perfil, usuarios y tareas
+- Tablas en phpMyAdmin
