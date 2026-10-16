@@ -77,4 +77,10 @@ return [
 'userNotFound'      => 'The user does not exist.',
 'cannotDeleteSelf'  => 'You cannot delete your own user.',
 'lastAdmin'         => 'At least one active administrator must remain.',
+'forgotTitle'       => 'Forgot password',
+'resetTitle'        => 'Password reset',
+'resetButton'       => 'Reset password',
+'resetSent'         => 'If the email is registered, you will receive instructions to reset your password.',
+'resetInvalid'      => 'The link is invalid or has expired.',
+'resetDone'         => 'Password reset. You can now log in.',
 ];

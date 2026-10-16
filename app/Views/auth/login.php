@@ -17,6 +17,6 @@
             <label class="form-check-label" for="remember"><?= lang('App.rememberMe') ?></label>
         </div>
         <button type="submit" class="btn btn-success"><?= lang('App.login') ?></button>
-        <a href="#" class="ms-2"><?= lang('App.forgotPassword') ?></a>
+        <a href="<?= site_url('forgot-password') ?>" class="ms-2"><?= lang('App.forgotPassword') ?></a>
     </form>
 <?= $this->endSection() ?>

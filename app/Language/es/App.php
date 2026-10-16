@@ -78,6 +78,11 @@ return [
 'userNotFound'          => 'El usuario no existe.',
 'cannotDeleteSelf'      => 'No puedes eliminar tu propio usuario.',
 'lastAdmin'             => 'Debe quedar al menos un administrador activo.',
-
+'forgotTitle'           => 'Olvidé mi contraseña',
+'resetTitle'            => 'Restablecer contraseña',
+'resetButton'           => 'Restablecer contraseña',
+'resetSent'             => 'Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña.',
+'resetInvalid'          => 'El enlace no es válido o ya expiró.',
+'resetDone'             => 'Contraseña restablecida. Ya puedes iniciar sesión.',
 
 ];

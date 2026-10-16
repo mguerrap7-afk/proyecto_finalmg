@@ -95,6 +95,43 @@ public function login(string $email, string $password)
         $this->users->update($userId, ['remember_token' => null]);
     }
 
+    public function requestReset(string $email): ?string
+    {
+        $user = $this->users->findByEmail($email);
+        if (! $user || (int) $user['active'] !== 1) {
+            return null;
+        }
+
+        $token = bin2hex(random_bytes(32));
+        $this->users->update((int) $user['id'], [
+            'reset_token'   => hash('sha256', $token),
+            'reset_expires' => date('Y-m-d H:i:s', time() + 3600),
+        ]);
+
+        return $token;
+    }
+
+    public function validResetToken(string $token): bool
+    {
+        $user = $this->users->findByResetToken(hash('sha256', $token));
+
+        return $user && ! empty($user['reset_expires']) && strtotime($user['reset_expires']) >= time();
+    }
+
+    public function resetPassword(string $token, string $newPassword): bool
+    {
+        $user = $this->users->findByResetToken(hash('sha256', $token));
+        if (! $user || empty($user['reset_expires']) || strtotime($user['reset_expires']) < time()) {
+            return false;
+        }
+
+        return $this->users->update((int) $user['id'], [
+            'password'       => password_hash($newPassword, PASSWORD_DEFAULT),
+            'reset_token'    => null,
+            'reset_expires'  => null,
+            'remember_token' => null,
+        ]);
+    }
     
     public function errors(): array
     {

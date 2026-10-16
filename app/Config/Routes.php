@@ -42,4 +42,9 @@ $routes->get('(:num)/edit', 'Users::edit/$1');
 $routes->post('(:num)/update', 'Users::update/$1');
 $routes->post('(:num)/delete', 'Users::delete/$1');
 });
+$routes->get('forgot-password', 'Auth::forgot');
+$routes->post('forgot-password', 'Auth::sendReset');
+$routes->get('reset/(:segment)', 'Auth::reset/$1');
+$routes->post('reset-password', 'Auth::doReset');
+
 

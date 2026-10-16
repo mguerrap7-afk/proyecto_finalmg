@@ -52,6 +52,12 @@ class UserRepository
     {
         return $this->model->where('is_admin', 1)->where('active', 1)->countAllResults();
     }
+    
+    public function findByResetToken(string $hash): ?array
+    {
+        return $this->model->where('reset_token', $hash)->first();
+    }
+
     public function errors(): array
     {
         return $this->model->errors();

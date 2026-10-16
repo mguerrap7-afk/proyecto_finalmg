@@ -118,4 +118,57 @@ class Auth extends BaseController
             ->with('success', lang('App.logoutSuccess'))
             ->deleteCookie('remember_me');
     }
+    public function forgot()
+    {
+        return view('auth/forgot');
+    }
+
+    public function sendReset()
+    {
+        $rules = ['email' => ['label' => 'App.email', 'rules' => 'required|valid_email']];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $email = (string) $this->request->getPost('email');
+        $token = $this->auth->requestReset($email);
+
+        if ($token) {
+            // Modo prueba: el enlace queda en writable/logs. Luego se enviará por correo.
+            log_message('info', "Reset link for {$email}: " . site_url('reset/' . $token));
+        }
+
+        return redirect()->to('login')->with('success', lang('App.resetSent'));
+    }
+
+    public function reset(string $token)
+    {
+        if (! $this->auth->validResetToken($token)) {
+            return redirect()->to('login')->with('error', lang('App.resetInvalid'));
+        }
+
+        return view('auth/reset', ['token' => $token]);
+    }
+
+    public function doReset()
+    {
+        $token = (string) $this->request->getPost('token');
+
+        $rules = [
+            'password'         => ['label' => 'App.password',       'rules' => 'required|min_length[8]'],
+            'password_confirm' => ['label' => 'App.repeatPassword', 'rules' => 'required|matches[password]'],
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->with('errors', $this->validator->getErrors());
+        }
+
+        if (! $this->auth->resetPassword($token, (string) $this->request->getPost('password'))) {
+            return redirect()->to('login')->with('error', lang('App.resetInvalid'));
+        }
+
+        return redirect()->to('login')->with('success', lang('App.resetDone'));
+    }
+
 }
