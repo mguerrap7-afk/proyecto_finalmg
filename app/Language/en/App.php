@@ -83,4 +83,8 @@ return [
 'resetSent'         => 'If the email is registered, you will receive instructions to reset your password.',
 'resetInvalid'      => 'The link is invalid or has expired.',
 'resetDone'         => 'Password reset. You can now log in.',
+'mailActivateSubject' => 'Activate your account',
+'mailActivateBody'    => 'Thanks for signing up. Open this link to activate your account (valid for 24 hours):',
+'mailResetSubject'    => 'Reset your password',
+'mailResetBody'       => 'Open this link to reset your password (valid for 1 hour):',
 ];

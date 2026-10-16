@@ -84,5 +84,9 @@ return [
 'resetSent'             => 'Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña.',
 'resetInvalid'          => 'El enlace no es válido o ya expiró.',
 'resetDone'             => 'Contraseña restablecida. Ya puedes iniciar sesión.',
+'mailActivateSubject'   => 'Activa tu cuenta',
+'mailActivateBody'      => 'Gracias por registrarte. Abre este enlace para activar tu cuenta (válido 24 horas):',
+'mailResetSubject'      => 'Restablecer contraseña',
+'mailResetBody'         => 'Abre este enlace para restablecer tu contraseña (válido 1 hora):',
 
 ];

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\AuthService;
+use App\Services\MailService;
 
 class Auth extends BaseController
 {
@@ -44,6 +45,8 @@ class Auth extends BaseController
 
     $link = site_url('activate/' . $token);
     log_message('info', "Activation link for {$email}: {$link}");
+    $body = '<p>' . esc(lang('App.mailActivateBody')) . '</p><p><a href="' . esc($link) . '">' . esc($link) . '</a></p>';
+(new MailService())->send($email, lang('App.mailActivateSubject'), $body);
 
     return redirect()->to('/')->with('success', lang('App.signupSuccess'));
 
@@ -135,8 +138,11 @@ class Auth extends BaseController
         $token = $this->auth->requestReset($email);
 
         if ($token) {
-            // Modo prueba: el enlace queda en writable/logs. Luego se enviará por correo.
-            log_message('info', "Reset link for {$email}: " . site_url('reset/' . $token));
+            $link = site_url('reset/' . $token);
+    log_message('info', "Reset link for {$email}: {$link}");
+
+    $body = '<p>' . esc(lang('App.mailResetBody')) . '</p><p><a href="' . esc($link) . '">' . esc($link) . '</a></p>';
+    (new MailService())->send($email, lang('App.mailResetSubject'), $body);
         }
 
         return redirect()->to('login')->with('success', lang('App.resetSent'));
