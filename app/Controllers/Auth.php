@@ -16,7 +16,7 @@ class Auth extends BaseController
 
     public function signup()
     {
-        return view('auth/signup');
+        return blade('auth.signup');
     }
 
     public function register()
@@ -65,7 +65,7 @@ class Auth extends BaseController
         if (session()->get('user_id')) {
             return redirect()->to('/');
         }
-        return view('auth/login');
+        return blade('auth.login');
     }
 
     public function attemptLogin()
@@ -123,7 +123,7 @@ class Auth extends BaseController
     }
     public function forgot()
     {
-        return view('auth/forgot');
+        return blade('auth.forgot');
     }
 
     public function sendReset()
@@ -154,7 +154,7 @@ class Auth extends BaseController
             return redirect()->to('login')->with('error', lang('App.resetInvalid'));
         }
 
-        return view('auth/reset', ['token' => $token]);
+        return blade('auth.reset', ['token' => $token]);
     }
 
     public function doReset()
