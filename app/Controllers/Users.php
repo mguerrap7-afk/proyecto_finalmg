@@ -15,7 +15,7 @@ class Users extends BaseController
 
     public function index()
     {
-        return view('users/index', [
+        return blade('users.index', [
             'users' => $this->users->list(),
             'pager' => $this->users->pager(),
         ]);
@@ -23,7 +23,7 @@ class Users extends BaseController
 
     public function new()
     {
-        return view('users/new');
+        return blade('users.new');
     }
 
     public function create()
@@ -61,7 +61,7 @@ class Users extends BaseController
             return redirect()->to('users')->with('error', lang('App.userNotFound'));
         }
 
-        return view('users/show', ['user' => $user]);
+        return blade('users.show', ['user' => $user]);
     }
 
     public function edit(int $id)
@@ -71,7 +71,7 @@ class Users extends BaseController
             return redirect()->to('users')->with('error', lang('App.userNotFound'));
         }
 
-        return view('users/edit', ['user' => $user]);
+        return blade('users.edit', ['user' => $user]);
     }
 
     public function update(int $id)
